@@ -31,12 +31,12 @@ function SignUp() {
 
       const data = await res.json()
 
-      if (data.success === 'false') {
-        return setErrorMessage(data.msg)
+      if (data.success === false) {
+        return setErrorMessage(data.message)
       }
 
       setLoading(false)
-      
+
       if (res.ok) {
         navigate('/sign-in')
       }
