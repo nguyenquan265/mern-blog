@@ -15,7 +15,7 @@ export const signup = catchAsync(async (req, res, next) => {
 
   await User.create({ username, email, password })
 
-  res.status(statusCode.CREATED).json({ msg: 'Signup successfully' })
+  res.status(statusCode.CREATED).json({ message: 'Signup successfully' })
 })
 
 export const signin = catchAsync(async (req, res, next) => {
@@ -38,5 +38,5 @@ export const signin = catchAsync(async (req, res, next) => {
     httpOnly: true
   })
 
-  res.status(statusCode.OK).json({ msg: 'Signin successfully', user })
+  res.status(statusCode.OK).json({ message: 'Signin successfully', user })
 })
