@@ -1,4 +1,6 @@
 import express from 'express'
+import cors from 'cors'
+import { corsOptions } from './config/cors.js'
 
 import env from './config/env.js'
 import { connectMongo } from './config/mongo.js'
@@ -9,6 +11,8 @@ import errorMiddleware from './middlewares/error.middleware.js'
 const start = () => {
   const app = express()
   const port = env.port
+
+  app.use(cors(corsOptions))
 
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())

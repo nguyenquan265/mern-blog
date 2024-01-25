@@ -6,6 +6,7 @@ export default (err, req, res, next) => {
   // if (err.stack.startsWith('ValidationError')) err.statusCode = 422
 
   const responseError = {
+    success: false,
     statusCode: err.statusCode,
     message: err.message || statusCode[err.statusCode],
     stack: err.stack
