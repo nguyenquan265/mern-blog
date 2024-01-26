@@ -38,5 +38,43 @@ export const signin = catchAsync(async (req, res, next) => {
     httpOnly: true
   })
 
-  res.status(statusCode.OK).json({ message: 'Signin successfully', user })
+  res.status(statusCode.OK).json({ message: 'Signin successfully', user: rest })
+})
+
+export const google = catchAsync(async (req, res, next) => {
+  const { email, name, googlePhotoUrl } = req.body
+
+  const user = await User.findOne({ email })
+
+  if (user) {
+    const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
+
+    res.cookie('access_token', token, {
+      httpOnly: true
+    })
+
+    res.status(statusCode.OK).json({ message: 'Signin successfully', user })
+  } else {
+    const generatedPassword = Math.random().toString(36).slice(-8)
+
+    const user = await User.create({
+      username:
+        name.toLowerCase().split(' ').join('') +
+        Math.random().toString(9).slice(-4),
+      email,
+      password: generatedPassword,
+      profilePicture: googlePhotoUrl
+    })
+
+    const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
+    const { password: pass, ...rest } = user._doc
+
+    res.cookie('access_token', token, {
+      httpOnly: true
+    })
+
+    res
+      .status(statusCode.OK)
+      .json({ message: 'Signin successfully', user: rest })
+  }
 })
