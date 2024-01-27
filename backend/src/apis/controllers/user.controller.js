@@ -11,7 +11,7 @@ export const updateUser = catchAsync(async (req, res, next) => {
     )
   }
 
-  const user = await User.findById(req.user.id)
+  const user = await User.findById(req.params.userId)
 
   if (req.body.currentPassword && req.body.newPassword) {
     if (req.body.currentPassword === req.body.newPassword) {
@@ -81,4 +81,20 @@ export const updateUser = catchAsync(async (req, res, next) => {
   res
     .status(statusCode.OK)
     .json({ message: 'Update user profile successfully', user: rest })
+})
+
+export const deleteUser = catchAsync(async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allowed to update this user'
+    )
+  }
+
+  await User.findByIdAndDelete(req.params.userId)
+
+  res
+    .status(200)
+    .clearCookie('access_token')
+    .json({ message: 'User has been deleted' })
 })
