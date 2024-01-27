@@ -34,11 +34,14 @@ export const signin = catchAsync(async (req, res, next) => {
   const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
   const { password: pass, ...rest } = user._doc
 
-  res.cookie('access_token', token, {
-    httpOnly: true
-  })
-
-  res.status(statusCode.OK).json({ message: 'Signin successfully', user: rest })
+  res
+    .status(statusCode.OK)
+    .cookie('access_token', token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true
+    })
+    .json({ message: 'Signin successfully', user: rest })
 })
 
 export const google = catchAsync(async (req, res, next) => {
@@ -50,12 +53,13 @@ export const google = catchAsync(async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
     const { password: pass, ...rest } = user._doc
 
-    res.cookie('access_token', token, {
-      httpOnly: true
-    })
-
     res
       .status(statusCode.OK)
+      .cookie('access_token', token, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true
+      })
       .json({ message: 'Signin successfully', user: rest })
   } else {
     // const generatedPassword = Math.random().toString(36).slice(-8)
@@ -73,12 +77,13 @@ export const google = catchAsync(async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
     const { password: pass, ...rest } = user._doc
 
-    res.cookie('access_token', token, {
-      httpOnly: true
-    })
-
     res
       .status(statusCode.OK)
+      .cookie('access_token', token, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true
+      })
       .json({ message: 'Signin successfully', user: rest })
   }
 })

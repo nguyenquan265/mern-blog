@@ -28,6 +28,7 @@ function SignIn() {
       const res = await fetch('http://localhost:8000/api/v1/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 

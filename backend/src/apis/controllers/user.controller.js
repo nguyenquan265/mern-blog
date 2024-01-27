@@ -71,6 +71,10 @@ export const updateUser = catchAsync(async (req, res, next) => {
     }
   }
 
+  if (req.body.profilePicture) {
+    user.profilePicture = req.body.profilePicture
+  }
+
   await user.save()
   const { password: pass, ...rest } = user._doc
 

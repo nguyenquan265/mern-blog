@@ -20,6 +20,7 @@ function OAuth() {
       const res = await fetch('http://localhost:8000/api/v1/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
