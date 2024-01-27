@@ -31,7 +31,10 @@ export const signin = catchAsync(async (req, res, next) => {
     throw new ApiError(statusCode.BAD_REQUEST, 'Invalid email or password')
   }
 
-  const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
+  const token = jwt.sign(
+    { id: user._id, isAdmin: user.isAdmin },
+    env.jwt.jwt_secret
+  )
   const { password: pass, ...rest } = user._doc
 
   res
@@ -50,7 +53,10 @@ export const google = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email })
 
   if (user) {
-    const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      env.jwt.jwt_secret
+    )
     const { password: pass, ...rest } = user._doc
 
     res
@@ -74,7 +80,10 @@ export const google = catchAsync(async (req, res, next) => {
       registrationMethod: 'oauth'
     })
 
-    const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      env.jwt.jwt_secret
+    )
     const { password: pass, ...rest } = user._doc
 
     res

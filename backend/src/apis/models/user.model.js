@@ -13,9 +13,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       validate(value) {
         if (!value.match(/^[a-zA-Z0-9]+$/)) {
-          throw new Error(
-            'Username must contain only letter and number'
-          )
+          throw new Error('Username must contain only letter and number')
         }
       }
     },
@@ -50,6 +48,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ['email', 'oauth'],
       required: true
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }
