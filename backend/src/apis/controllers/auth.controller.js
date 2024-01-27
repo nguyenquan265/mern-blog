@@ -87,3 +87,10 @@ export const google = catchAsync(async (req, res, next) => {
       .json({ message: 'Signin successfully', user: rest })
   }
 })
+
+export const signout = catchAsync((req, res, next) => {
+  res
+    .status(statusCode.OK)
+    .clearCookie('access_token')
+    .json({ message: 'Sign out successfully' })
+})
