@@ -19,7 +19,6 @@ function DashProfile() {
 
     if (file) {
       setImageFile(file)
-      // setImageFileUrl(URL.createObjectURL(file))
     }
   }
 
@@ -91,7 +90,8 @@ function DashProfile() {
         {imageFileUploadedError && <Alert color='failure'>{imageFileUploadedError}</Alert>}
         <TextInput type='text' id='username' placeholder='username' defaultValue={currentUser.username} />
         <TextInput type='email' id='email' placeholder='email' defaultValue={currentUser.email} />
-        <TextInput type='password' id='password' placeholder='password' />
+        <TextInput type='password' id='currentPassword' placeholder='type your current password' disabled={currentUser.registrationMethod !== 'email'} />
+        <TextInput type='password' id='newPassword' placeholder='type your new password' disabled={currentUser.registrationMethod !== 'email'} />
         <Button type='submit' gradientDuoTone='purpleToBlue' outline>Update</Button>
       </form>
       <div className='text-red-500 flex justify-between mt-5'>

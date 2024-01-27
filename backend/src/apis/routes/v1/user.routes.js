@@ -1,6 +1,10 @@
 import express from 'express'
 const router = express.Router()
 
-import userController from '../../controllers/user.controller.js'
+import { authenticate } from '../../../middlewares/auth.middleware.js'
+import { updateUser } from '../../controllers/user.controller.js'
+
+router.use(authenticate)
+router.put('/update/:userId', updateUser)
 
 export default router

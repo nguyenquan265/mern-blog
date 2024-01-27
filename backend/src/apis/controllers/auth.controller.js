@@ -13,7 +13,7 @@ export const signup = catchAsync(async (req, res, next) => {
     throw new ApiError(statusCode.BAD_REQUEST, 'All fields are required')
   }
 
-  await User.create({ username, email, password })
+  await User.create({ username, email, password, registrationMethod: 'email' })
 
   res.status(statusCode.CREATED).json({ message: 'Signup successfully' })
 })
@@ -48,22 +48,26 @@ export const google = catchAsync(async (req, res, next) => {
 
   if (user) {
     const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
+    const { password: pass, ...rest } = user._doc
 
     res.cookie('access_token', token, {
       httpOnly: true
     })
 
-    res.status(statusCode.OK).json({ message: 'Signin successfully', user })
+    res
+      .status(statusCode.OK)
+      .json({ message: 'Signin successfully', user: rest })
   } else {
-    const generatedPassword = Math.random().toString(36).slice(-8)
+    // const generatedPassword = Math.random().toString(36).slice(-8)
 
     const user = await User.create({
       username:
         name.toLowerCase().split(' ').join('') +
         Math.random().toString(9).slice(-4),
       email,
-      password: generatedPassword,
-      profilePicture: googlePhotoUrl
+      // password: generatedPassword,
+      profilePicture: googlePhotoUrl,
+      registrationMethod: 'oauth'
     })
 
     const token = jwt.sign({ id: user._id }, env.jwt.jwt_secret)
