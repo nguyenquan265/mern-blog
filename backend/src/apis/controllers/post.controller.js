@@ -2,6 +2,7 @@ import Post from '../models/post.model.js'
 import catchAsync from '../../utils/catchAsync.js'
 import ApiError from '../../utils/ApiError.js'
 import statusCode from '../../config/status.js'
+import slugify from '../../utils/slugify.js'
 
 export const create = catchAsync(async (req, res, next) => {
   if (!req.user.isAdmin) {
@@ -15,11 +16,7 @@ export const create = catchAsync(async (req, res, next) => {
     throw new ApiError(statusCode.BAD_REQUEST, 'All fields are required')
   }
 
-  const slug = req.body.title
-    .toLowerCase()
-    .split(' ')
-    .join('-')
-    .replace(/[^a-zA-Z0-9-]/g, '')
+  const slug = slugify(req.body.title)
 
   const post = await Post.create({ ...req.body, slug, userId: req.user.id })
 
