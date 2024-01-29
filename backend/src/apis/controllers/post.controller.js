@@ -69,11 +69,33 @@ export const deletePost = catchAsync(async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     throw new ApiError(
       statusCode.FORBIDDEN,
-      'You are not allow to delete a post'
+      'You are not allow to delete this post'
     )
   }
 
   await Post.findByIdAndDelete(req.params.postId)
 
   res.status(statusCode.OK).json({ message: 'Delete post successfully' })
+})
+
+export const updatePost = catchAsync(async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allow to update this post'
+    )
+  }
+
+  const post = await Post.findByIdAndUpdate(
+    req.params.postId,
+    {
+      title: req.body.title,
+      content: req.body.content,
+      category: req.body.category,
+      image: req.body.image
+    },
+    { new: true }
+  )
+
+  res.status(statusCode.OK).json({ message: 'Update post successfully', post })
 })
