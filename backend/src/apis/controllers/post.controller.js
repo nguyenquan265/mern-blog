@@ -64,3 +64,16 @@ export const getPosts = catchAsync(async (req, res, next) => {
     lastMonthPosts
   })
 })
+
+export const deletePost = catchAsync(async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allow to delete a post'
+    )
+  }
+
+  await Post.findByIdAndDelete(req.params.postId)
+
+  res.status(statusCode.OK).json({ message: 'Delete post successfully' })
+})
