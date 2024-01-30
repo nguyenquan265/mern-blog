@@ -4,7 +4,7 @@ import ApiError from '../../utils/ApiError.js'
 import statusCode from '../../config/status.js'
 
 export const updateUser = catchAsync(async (req, res, next) => {
-  if (req.user.id !== req.params.userId) {
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     throw new ApiError(
       statusCode.FORBIDDEN,
       'You are not allowed to update this user'
@@ -84,7 +84,7 @@ export const updateUser = catchAsync(async (req, res, next) => {
 })
 
 export const deleteUser = catchAsync(async (req, res, next) => {
-  if (req.user.id !== req.params.userId) {
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     throw new ApiError(
       statusCode.FORBIDDEN,
       'You are not allowed to update this user'
@@ -93,8 +93,48 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 
   await User.findByIdAndDelete(req.params.userId)
 
-  res
-    .status(200)
-    .clearCookie('access_token')
-    .json({ message: 'User has been deleted' })
+  res.status(200).json({ message: 'User has been deleted' })
+})
+
+export const getUsers = catchAsync(async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allowed to get all users'
+    )
+  }
+
+  const startIndex = parseInt(req.query.startIndex) || 0
+  const limit = parseInt(req.query.limit) || 9
+  const sortDirection = req.query.order === 'asc' ? 1 : -1
+
+  const users = await User.find()
+    .sort({ updatedAt: sortDirection })
+    .skip(startIndex)
+    .limit(limit)
+
+  const usersWithoutPassword = users.map((user) => {
+    const { password, ...rest } = user._doc
+    return rest
+  })
+
+  const count = await User.countDocuments()
+
+  const now = new Date()
+  const oneMonthAgo = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    now.getDate()
+  )
+
+  const lastMonthUsers = await User.countDocuments({
+    createdAt: { $gte: oneMonthAgo }
+  })
+
+  res.status(statusCode.OK).json({
+    message: 'Get users successfully',
+    users: usersWithoutPassword,
+    totalUsers: count,
+    lastMonthUsers
+  })
 })
