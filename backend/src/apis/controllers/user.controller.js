@@ -138,3 +138,17 @@ export const getUsers = catchAsync(async (req, res, next) => {
     lastMonthUsers
   })
 })
+
+export const getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId)
+
+  if (!user) {
+    throw new ApiError(statusCode.BAD_REQUEST, 'User not found')
+  }
+
+  const { password, ...rest } = user._doc
+
+  res
+    .status(statusCode.OK)
+    .json({ message: 'Get user successfully', user: rest })
+})

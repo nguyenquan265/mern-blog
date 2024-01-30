@@ -5,8 +5,11 @@ import { authenticate } from '../../../middlewares/auth.middleware.js'
 import {
   updateUser,
   deleteUser,
-  getUsers
+  getUsers,
+  getUser
 } from '../../controllers/user.controller.js'
+
+router.get('/:userId', getUser)
 
 router.use(authenticate)
 router.put('/update/:userId', updateUser)
