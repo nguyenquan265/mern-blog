@@ -29,3 +29,30 @@ export const getPostComments = catchAsync(async (req, res, next) => {
     .status(statusCode.OK)
     .json({ message: 'Get comments successfully', comments })
 })
+
+export const likeComment = catchAsync(async (req, res, next) => {
+  const comment = await Comment.findById(req.params.commentId)
+  let isLike
+
+  if (!comment) {
+    throw new ApiError(statusCode.BAD_REQUEST, 'Comment not found')
+  }
+
+  const userIndex = comment.likes.indexOf(req.user.id)
+
+  if (userIndex === -1) {
+    comment.likes.push(req.user.id)
+    comment.numberOfLikes += 1
+    isLike = 'Like'
+  } else {
+    comment.likes.splice(userIndex, 1)
+    comment.numberOfLikes -= 1
+    isLike = 'Unlike'
+  }
+
+  await comment.save()
+
+  res
+    .status(statusCode.OK)
+    .json({ message: `${isLike} comment successfully`, comment })
+})
