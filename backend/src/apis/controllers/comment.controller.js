@@ -56,3 +56,29 @@ export const likeComment = catchAsync(async (req, res, next) => {
     .status(statusCode.OK)
     .json({ message: `${isLike} comment successfully`, comment })
 })
+
+export const editComment = catchAsync(async (req, res, next) => {
+  const comment = await Comment.findById(req.params.commentId)
+
+  if (!comment) {
+    throw new ApiError(statusCode.BAD_REQUEST, 'Comment not found')
+  }
+
+  if (!req.user.isAdmin && comment.userId !== req.user.id) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allow to edit this comment'
+    )
+  }
+
+  if (req.body.content) {
+    // const comment =
+    comment.content = req.body.content
+  }
+
+  await comment.save()
+
+  res
+    .status(statusCode.OK)
+    .json({ message: 'Edit comment successfully', comment })
+})
