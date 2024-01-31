@@ -72,7 +72,6 @@ export const editComment = catchAsync(async (req, res, next) => {
   }
 
   if (req.body.content) {
-    // const comment =
     comment.content = req.body.content
   }
 
@@ -81,4 +80,23 @@ export const editComment = catchAsync(async (req, res, next) => {
   res
     .status(statusCode.OK)
     .json({ message: 'Edit comment successfully', comment })
+})
+
+export const deleteComment = catchAsync(async (req, res, next) => {
+  const comment = await Comment.findById(req.params.commentId)
+
+  if (!comment) {
+    throw new ApiError(statusCode.BAD_REQUEST, 'Comment not found')
+  }
+
+  if (!req.user.isAdmin && comment.userId !== req.user.id) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allow to delete this comment'
+    )
+  }
+
+  await Comment.findByIdAndDelete(req.params.commentId)
+
+  res.status(statusCode.OK).json({ message: 'Delete comment successfully' })
 })
