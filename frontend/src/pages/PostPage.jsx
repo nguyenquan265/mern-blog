@@ -21,7 +21,7 @@ function PostPage() {
 
         const data = await res.json()
 
-        if (!res.ok) {
+        if (!res.ok || !data.posts[0]) {
           setError(true)
           setLoading(false)
           return
@@ -60,6 +60,8 @@ function PostPage() {
   if (loading) return <div className='flex justify-center items-center min-h-screen'>
     <Spinner size='xl' />
   </div>
+
+  if (error) return <div>something wrong...</div>
 
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>

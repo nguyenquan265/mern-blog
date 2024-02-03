@@ -36,7 +36,7 @@ function Comment({ comment, onLike, onEdit, onDelete }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/users/${comment.userId}`)
+        const res = await fetch(`http://localhost:8000/api/v1/users/getUser/${comment.userId}`)
 
         const data = await res.json()
 

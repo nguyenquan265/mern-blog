@@ -100,3 +100,41 @@ export const deleteComment = catchAsync(async (req, res, next) => {
 
   res.status(statusCode.OK).json({ message: 'Delete comment successfully' })
 })
+
+export const getComments = catchAsync(async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allow to get all comments'
+    )
+  }
+
+  const startIndex = parseInt(req.query.startIndex) || 0
+  const limit = parseInt(req.query.limit) || 9
+  const sortDirection = req.query.order === 'asc' ? 1 : -1
+
+  const comments = await Comment.find()
+    .sort({ updatedAt: sortDirection })
+    .skip(startIndex)
+    .limit(limit)
+
+  const count = await Comment.countDocuments()
+
+  const now = new Date()
+  const oneMonthAgo = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    now.getDate()
+  )
+
+  const lastMonthComments = await Comment.countDocuments({
+    createdAt: { $gte: oneMonthAgo }
+  })
+
+  res.status(statusCode.OK).json({
+    message: 'Get posts successfully',
+    comments,
+    totalComments: count,
+    lastMonthComments
+  })
+})
