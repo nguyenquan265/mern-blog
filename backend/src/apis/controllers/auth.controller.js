@@ -68,14 +68,11 @@ export const google = catchAsync(async (req, res, next) => {
       })
       .json({ message: 'Signin successfully', user: rest })
   } else {
-    // const generatedPassword = Math.random().toString(36).slice(-8)
-
     const user = await User.create({
       username:
         name.toLowerCase().split(' ').join('') +
         Math.random().toString(9).slice(-4),
       email,
-      // password: generatedPassword,
       profilePicture: googlePhotoUrl,
       registrationMethod: 'oauth'
     })
@@ -97,9 +94,8 @@ export const google = catchAsync(async (req, res, next) => {
   }
 })
 
-export const signout = catchAsync((req, res, next) => {
-  res
-    .status(statusCode.OK)
-    .clearCookie('access_token')
-    .json({ message: 'Sign out successfully' })
+export const signout = catchAsync(async (req, res, next) => {
+  res.clearCookie('access_token')
+
+  res.status(statusCode.OK).json({ message: 'Sign out successfully' })
 })
