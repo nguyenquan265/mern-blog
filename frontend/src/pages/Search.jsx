@@ -16,7 +16,7 @@ function Search() {
   const [showMore, setShowMore] = useState(false)
 
   const handleChange = (e) => {
-    if (e.target.id === 'seacrhTerm') {
+    if (e.target.id === 'searchTerm') {
       setSidebarData({ ...sidebarData, searchTerm: e.target.value })
     }
 
@@ -55,8 +55,8 @@ function Search() {
       const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?${searchQuery}`)
       const data = await res.json()
 
-      if (!res.ok) {
-        setPosts([...posts, ...data.posts])
+      if (res.ok) {
+        setPosts(posts => [...posts, ...data.posts])
 
         if (data.posts.length < 9) {
           setShowMore(false)

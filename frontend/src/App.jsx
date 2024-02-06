@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import About from './pages/About'
 import Dashboard from './pages/Dashboard'
@@ -18,6 +19,8 @@ import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
+  const { currentUser } = useSelector((state) => state.user)
+
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -25,8 +28,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
-        <Route path='/sign-in' element={<SignIn />} />
-        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/sign-in' element={currentUser ? <Navigate to='/' /> : <SignIn />} />
+        <Route path='/sign-up' element={currentUser ? <Navigate to='/' /> : <SignUp />} />
         <Route path='/search' element={<Search />} />
         <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
