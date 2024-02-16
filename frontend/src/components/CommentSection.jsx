@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Comment from './Comment'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
+import { FaFacebook } from "react-icons/fa"
 
 function CommentSection({ postId }) {
   const { currentUser } = useSelector(state => state.user)
@@ -127,12 +128,19 @@ function CommentSection({ postId }) {
     <div className='max-w-2xl mx-auto w-full p-3'>
       {
         currentUser ?
-          <div className='flex items-center gap-1 my-5 text-gray-500 text-sm'>
-            <p>Signed in as:</p>
-            <img className='h-5 w-5 object-cover rounded-full' src={currentUser.profilePicture} alt='user' />
-            <Link to='/dashboard?tab=profile' className='text-xs text-cyan-600 hover:underline'>
-              @ {currentUser.username}
-            </Link>
+          <div className='flex justify-between items-center'>
+            <div className='flex items-center gap-1 my-5 text-gray-500 text-sm'>
+              <p>Signed in as:</p>
+              <img className='h-5 w-5 object-cover rounded-full' src={currentUser.profilePicture} alt='user' />
+              <Link to='/dashboard?tab=profile' className='text-xs text-cyan-600 hover:underline'>
+                @ {currentUser.username}
+              </Link>
+            </div>
+            <div>
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`} target='_blank' title='share this blog to facebook'>
+                <FaFacebook className='text-blue-500 h-8 w-8' />
+              </a>
+            </div>
           </div>
           :
           <div className='text-sm text-teal-500 my-5 flex gap-1'>
