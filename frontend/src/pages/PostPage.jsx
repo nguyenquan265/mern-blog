@@ -61,7 +61,12 @@ function PostPage() {
     <Spinner size='xl' />
   </div>
 
-  if (error) return <div>something wrong...</div>
+  if (error) return <div className="min-h-80 flex flex-col max-w-xl mx-auto justify-center" role="alert">
+    <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center'>
+      <strong className="font-bold">Something wrong...</strong>
+      <span className="block sm:inline"> Please try again!</span>
+    </div>
+  </div>
 
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>

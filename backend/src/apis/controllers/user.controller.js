@@ -1,4 +1,6 @@
 import User from '../models/user.model.js'
+import Post from '../models/post.model.js'
+import Comment from '../models/comment.model.js'
 import catchAsync from '../../utils/catchAsync.js'
 import ApiError from '../../utils/ApiError.js'
 import statusCode from '../../config/status.js'
@@ -92,6 +94,8 @@ export const deleteUser = catchAsync(async (req, res, next) => {
   }
 
   await User.findByIdAndDelete(req.params.userId)
+  await Post.deleteMany({ userId: req.params.userId })
+  await Comment.deleteMany({ userId: req.params.userId })
 
   res.status(200).json({ message: 'User has been deleted' })
 })

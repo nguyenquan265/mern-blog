@@ -1,4 +1,5 @@
 import Post from '../models/post.model.js'
+import Comment from '../models/comment.model.js'
 import catchAsync from '../../utils/catchAsync.js'
 import ApiError from '../../utils/ApiError.js'
 import statusCode from '../../config/status.js'
@@ -74,6 +75,7 @@ export const deletePost = catchAsync(async (req, res, next) => {
   }
 
   await Post.findByIdAndDelete(req.params.postId)
+  await Comment.deleteMany({ postId: req.params.postId })
 
   res.status(statusCode.OK).json({ message: 'Delete post successfully' })
 })
