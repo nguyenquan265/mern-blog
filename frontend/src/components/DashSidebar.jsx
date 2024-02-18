@@ -1,5 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation, HiChartPie } from 'react-icons/hi'
+import { FaBookmark } from "react-icons/fa"
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -64,6 +65,16 @@ function DashSideBar() {
               as='div'
             >
               Profile
+            </Sidebar.Item>
+          </Link>
+          <Link to='/dashboard?tab=bookmark'>
+            <Sidebar.Item
+              active={tab === 'bookmark'}
+              icon={FaBookmark}
+              labelColor='dark'
+              as='div'
+            >
+              Bookmark
             </Sidebar.Item>
           </Link>
           {

@@ -94,7 +94,6 @@ function DashProfile() {
       })
 
       const data = await res.json()
-      console.log(data)
 
       if (!res.ok) {
         dispatch(updateFailure(data.message))

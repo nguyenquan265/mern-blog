@@ -1,4 +1,5 @@
 import Post from '../models/post.model.js'
+import User from '../models/user.model.js'
 import Comment from '../models/comment.model.js'
 import catchAsync from '../../utils/catchAsync.js'
 import ApiError from '../../utils/ApiError.js'
@@ -100,4 +101,37 @@ export const updatePost = catchAsync(async (req, res, next) => {
   )
 
   res.status(statusCode.OK).json({ message: 'Update post successfully', post })
+})
+
+export const bookmarkPost = catchAsync(async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    throw new ApiError(
+      statusCode.FORBIDDEN,
+      'You are not allow to update this post'
+    )
+  }
+
+  const user = await User.findById(req.params.userId)
+
+  const isBookmarked =
+    user.bookmark && user.bookmark.includes(req.params.postId)
+  const option = isBookmarked ? '$pull' : '$addToSet'
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.userId,
+    { [option]: { bookmark: req.params.postId } },
+    { new: true }
+  )
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    req.params.postId,
+    { [option]: { bookmark: req.params.userId } },
+    { new: true }
+  )
+
+  res.status(statusCode.OK).json({
+    message: 'Bookmark post successfully',
+    user: updatedUser,
+    post: updatedPost
+  })
 })

@@ -1,48 +1,81 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Button, Spinner } from 'flowbite-react'
 import CallToAction from '../components/CallToAction'
 import CommentSection from '../components/CommentSection'
 import PostCard from '../components/PostCard'
 import { ref, get, runTransaction } from "firebase/database"
 import { database } from '../firebase'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+} from '../redux/user/userSlice'
 
 import { FaBookmark } from "react-icons/fa"
 import { GrView } from "react-icons/gr"
 
 function PostPage() {
+  const { currentUser } = useSelector(state => state.user)
   const { postSlug } = useParams()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [post, setPost] = useState(null)
   const [recentPosts, setRecentPosts] = useState(null)
   const [views, setViews] = useState(null)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleBookmark = () => { }
-
-  useEffect(() => {
-    if (post) {
-      const postRef = ref(database, 'posts/' + post._id + '/views');
-
-      runTransaction(postRef, (currentViews) => {
-        if (currentViews === null) {
-          return 1;
-        }
-
-        return currentViews + 1;
-      });
-
-      get(ref(database, `posts/${post._id}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          setViews((snapshot.val().views))
-        } else {
-          console.log("No data available")
-        }
-      }).catch((error) => {
-        console.error(error)
-      })
+  const handleBookmark = async () => {
+    if (!currentUser) {
+      navigate('/sign-in')
+      return
     }
-  }, [post])
+
+    try {
+      dispatch(updateStart())
+
+      const res = await fetch(`http://localhost:8000/api/v1/posts/bookmarkPost/${post._id}/${currentUser._id}`, {
+        method: 'PATCH',
+        credentials: 'include'
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        dispatch(updateFailure(data.message))
+      } else {
+        dispatch(updateSuccess(data))
+        setPost(data.post)
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message))
+      console.log(error)
+    }
+  }
+
+  const updateViews = (post) => {
+    const postRef = ref(database, 'posts/' + post._id + '/views');
+
+    runTransaction(postRef, (currentViews) => {
+      if (currentViews === null) {
+        return 1;
+      }
+
+      return currentViews + 1;
+    });
+
+    get(ref(database, `posts/${post._id}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        setViews((snapshot.val().views))
+      } else {
+        console.log("No data available")
+      }
+    }).catch((error) => {
+      console.error(error)
+    })
+  }
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -62,6 +95,7 @@ function PostPage() {
         setPost(data.posts[0])
         setLoading(false)
         setError(false)
+        updateViews(data.posts[0])
       } catch (error) {
         setError(true)
         setLoading(false)
@@ -110,13 +144,13 @@ function PostPage() {
           {post.category}
         </Button>
       </Link>
-      <div class='flex justify-end p-3'>
-        <div class='flex items-center'>
-          <GrView class='h-5 w-5 mr-1 text-gray-500' />
-          <span class='text-gray-500'>{views}</span>
+      <div className='flex justify-end p-3'>
+        <div className='flex items-center'>
+          <GrView className='h-5 w-5 mr-1 text-gray-500' />
+          <span className='text-gray-500'>{views}</span>
         </div>
         <FaBookmark
-          class='h-5 w-5 ml-4 hover:cursor-pointer hover:text-gray-500'
+          className='h-5 w-5 ml-4 hover:cursor-pointer hover:text-gray-500'
           title='Bookmark this blog'
           onClick={handleBookmark}
         />
