@@ -145,15 +145,25 @@ function PostPage() {
         </Button>
       </Link>
       <div className='flex justify-end p-3'>
-        <div className='flex items-center'>
+        <div className='flex items-center gap-1'>
           <GrView className='h-5 w-5 mr-1 text-gray-500' />
           <span className='text-gray-500'>{views}</span>
         </div>
-        <FaBookmark
-          className='h-5 w-5 ml-4 hover:cursor-pointer hover:text-gray-500'
-          title='Bookmark this blog'
-          onClick={handleBookmark}
-        />
+        <div className='flex items-center gap-1'>
+          {
+            currentUser && post.bookmark.includes(currentUser._id) ?
+              <FaBookmark
+                className='h-5 w-5 ml-4 text-blue-500 hover:cursor-pointer hover:text-blue-600'
+                onClick={handleBookmark}
+              />
+              :
+              <FaBookmark
+                className='h-5 w-5 ml-4 hover:cursor-pointer hover:text-gray-500'
+                onClick={handleBookmark}
+              />
+          }
+          <span className='text-gray-500'>{post.bookmark.length}</span>
+        </div>
       </div>
       <img src={post.image} alt={post.title} className='mt-3 p-3 max-h-[600px] w-full object-cover' />
       <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>

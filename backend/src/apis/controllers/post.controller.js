@@ -35,6 +35,7 @@ export const getPosts = catchAsync(async (req, res, next) => {
     ...(req.query.category && { category: req.query.category }),
     ...(req.query.slug && { slug: req.query.slug }),
     ...(req.query.postId && { _id: req.query.postId }),
+    ...(req.query.bookmark && { bookmark: { $in: [req.query.bookmark] } }),
     ...(req.query.searchTerm && {
       $or: [
         { title: { $regex: req.query.searchTerm, $options: 'i' } },
@@ -122,16 +123,19 @@ export const bookmarkPost = catchAsync(async (req, res, next) => {
     { [option]: { bookmark: req.params.postId } },
     { new: true }
   )
+  const { password: pass, ...rest } = updatedUser._doc
 
   const updatedPost = await Post.findByIdAndUpdate(
     req.params.postId,
-    { [option]: { bookmark: req.params.userId } },
+    {
+      [option]: { bookmark: req.params.userId }
+    },
     { new: true }
   )
 
   res.status(statusCode.OK).json({
     message: 'Bookmark post successfully',
-    user: updatedUser,
+    user: rest,
     post: updatedPost
   })
 })
