@@ -56,6 +56,12 @@ const userSchema = new mongoose.Schema(
     bookmark: {
       type: Array,
       default: []
+    },
+    passwordToken: {
+      type: String
+    },
+    passwordTokenExpirationDate: {
+      type: Date
     }
   },
   { timestamps: true }

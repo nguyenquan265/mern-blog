@@ -17,6 +17,8 @@ import Footer from './components/Footer'
 import PrivateRoute from './components/PrivateRoute'
 import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute'
 import ScrollToTop from './components/ScrollToTop'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
   const { currentUser } = useSelector((state) => state.user)
@@ -30,6 +32,8 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/sign-in' element={currentUser ? <Navigate to='/' /> : <SignIn />} />
         <Route path='/sign-up' element={currentUser ? <Navigate to='/' /> : <SignUp />} />
+        <Route path='/forgot-password' element={currentUser ? <Navigate to='/' /> : <ForgotPassword />} />
+        <Route path='/reset-password' element={currentUser ? <Navigate to='/' /> : <ResetPassword />} />
         <Route path='/search' element={<Search />} />
         <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
