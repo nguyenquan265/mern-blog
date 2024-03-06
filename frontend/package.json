@@ -3,14 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "dev": "cross-env BUILD_MODE=dev vite",
+    "build": "cross-env BUILD_MODE=prod vite build --base=./",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.1.0",
+    "cross-env": "^7.0.3",
     "firebase": "^10.7.2",
     "flowbite-react": "^0.7.2",
     "moment": "^2.30.1",

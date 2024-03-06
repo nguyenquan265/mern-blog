@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom'
 import CallToAction from '../components/CallToAction'
 import PostCard from '../components/PostCard'
 
+import env from '../config/env'
+
 function Home() {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/posts/getPosts')
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts`)
 
         const data = await res.json()
 

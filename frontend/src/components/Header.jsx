@@ -7,6 +7,8 @@ import { toggleTheme } from '../redux/theme/themeSlice'
 import { signOutSuccess } from '../redux/user/userSlice'
 import { useState, useEffect } from 'react'
 
+import env from '../config/env'
+
 function Header() {
   const path = useLocation().pathname
   const location = useLocation()
@@ -18,7 +20,7 @@ function Header() {
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/auth/signout`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/signout`, {
         method: 'POST',
         credentials: 'include'
       })

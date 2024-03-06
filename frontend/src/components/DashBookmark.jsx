@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux'
 
 import PostCard from "./PostCard"
 
+import env from "../config/env"
+
 function DashBookmark() {
   const { currentUser } = useSelector(state => state.user)
   const [posts, setPosts] = useState([])
@@ -12,7 +14,7 @@ function DashBookmark() {
     const startIndex = posts.length
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?bookmark=${currentUser._id}&startIndex=${startIndex}`)
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?bookmark=${currentUser._id}&startIndex=${startIndex}`)
 
       const data = await res.json()
 
@@ -31,7 +33,7 @@ function DashBookmark() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?bookmark=${currentUser._id}`)
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?bookmark=${currentUser._id}`)
 
         const data = await res.json()
         setPosts(data.posts)

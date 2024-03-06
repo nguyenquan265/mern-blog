@@ -4,6 +4,8 @@ import { Table, Modal, Button } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
+import env from "../config/env"
+
 function DashPosts() {
   const { currentUser } = useSelector((state) => state.user)
   const [userPosts, setUserPosts] = useState([])
@@ -15,7 +17,7 @@ function DashPosts() {
     const startIndex = userPosts.length
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`)
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`)
 
       const data = await res.json()
 
@@ -35,7 +37,7 @@ function DashPosts() {
     setShowModal(false)
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/posts/deletePost/${postIdToDelete}/${currentUser._id}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/deletePost/${postIdToDelete}/${currentUser._id}`, {
         method: 'DELETE',
         credentials: 'include'
       })
@@ -55,7 +57,7 @@ function DashPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?userId=${currentUser._id}`)
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?userId=${currentUser._id}`)
 
         const data = await res.json()
 

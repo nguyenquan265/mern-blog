@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
 import OAuth from '../components/OAuth'
 
+import env from '../config/env'
+
 function SignIn() {
   const [formData, setFormData] = useState({})
   const { loading, error: errorMessage } = useSelector(state => state.user)
@@ -25,7 +27,7 @@ function SignIn() {
     try {
       dispatch(signInStart())
 
-      const res = await fetch('http://localhost:8000/api/v1/auth/signin', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

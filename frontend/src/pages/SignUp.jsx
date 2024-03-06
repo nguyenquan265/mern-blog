@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth'
 
+import env from '../config/env'
+
 function SignUp() {
   const [formData, setFormData] = useState({})
   const [errorMessage, setErrorMessage] = useState(null)
@@ -24,7 +26,7 @@ function SignUp() {
       setLoading(true)
       setErrorMessage(null)
 
-      const res = await fetch('http://localhost:8000/api/v1/auth/signup', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

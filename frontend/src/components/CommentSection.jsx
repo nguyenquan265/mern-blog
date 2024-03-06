@@ -6,6 +6,8 @@ import Comment from './Comment'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { FaFacebook } from "react-icons/fa"
 
+import env from '../config/env'
+
 function CommentSection({ postId }) {
   const { currentUser } = useSelector(state => state.user)
   const [comment, setComment] = useState('')
@@ -21,7 +23,7 @@ function CommentSection({ postId }) {
     if (comment.length > 200) return
 
     try {
-      const res = await fetch('http://localhost:8000/api/v1/comments/create', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/comments/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -47,7 +49,7 @@ function CommentSection({ postId }) {
         return
       }
 
-      const res = await fetch(`http://localhost:8000/api/v1/comments/likeComment/${commentId}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/comments/likeComment/${commentId}`, {
         method: 'PUT',
         credentials: 'include'
       })
@@ -91,7 +93,7 @@ function CommentSection({ postId }) {
         return
       }
 
-      const res = await fetch(`http://localhost:8000/api/v1/comments/deleteComment/${commentId}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/comments/deleteComment/${commentId}`, {
         method: 'DELETE',
         credentials: 'include'
       })
@@ -109,7 +111,7 @@ function CommentSection({ postId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/comments/getPostComments/${postId}`)
+        const res = await fetch(`${env.API_ROOT}/api/v1/comments/getPostComments/${postId}`)
 
         const data = await res.json()
 

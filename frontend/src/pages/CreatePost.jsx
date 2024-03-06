@@ -8,6 +8,8 @@ import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { useNavigate } from 'react-router-dom'
 
+import env from '../config/env'
+
 function CreatePost() {
   const [file, setFile] = useState(null)
   const [imageFileUploadedProgess, setImageFileUploadedProgess] = useState(null)
@@ -57,7 +59,7 @@ function CreatePost() {
     e.preventDefault()
 
     try {
-      const res = await fetch('http://localhost:8000/api/v1/posts/create', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

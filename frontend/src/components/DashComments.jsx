@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux'
 import { Table, Modal, Button } from 'flowbite-react'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
+import env from "../config/env"
+
 function DashComments() {
   const { currentUser } = useSelector((state) => state.user)
   const [comments, setComments] = useState([])
@@ -14,7 +16,7 @@ function DashComments() {
     const startIndex = comments.length
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/comments/getComments?startIndex=${startIndex}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/comments/getComments?startIndex=${startIndex}`, {
         credentials: 'include'
       })
 
@@ -36,7 +38,7 @@ function DashComments() {
     setShowModal(false)
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/comments/deleteComment/${commentIdToDelete}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/comments/deleteComment/${commentIdToDelete}`, {
         method: 'DELETE',
         credentials: 'include'
       })
@@ -56,7 +58,7 @@ function DashComments() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/comments/getComments', {
+        const res = await fetch(`${env.API_ROOT}/api/v1/comments/getComments`, {
           credentials: 'include'
         })
 
@@ -78,7 +80,7 @@ function DashComments() {
       fetchComments()
     }
   }, [currentUser._id])
- 
+
   return (
     <div className='w-full table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
       {

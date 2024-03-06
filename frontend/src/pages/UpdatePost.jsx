@@ -9,6 +9,8 @@ import 'react-circular-progressbar/dist/styles.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import env from '../config/env'
+
 function UpdatePost() {
   const [file, setFile] = useState(null)
   const [imageFileUploadedProgess, setImageFileUploadedProgess] = useState(null)
@@ -60,7 +62,7 @@ function UpdatePost() {
     e.preventDefault()
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/posts/updatePost/${formData._id}/${currentUser._id}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/updatePost/${formData._id}/${currentUser._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -89,7 +91,7 @@ function UpdatePost() {
   useEffect(() => {
     try {
       const fetchPost = async () => {
-        const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?postId=${postId}`)
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?postId=${postId}`)
 
         const data = await res.json()
 

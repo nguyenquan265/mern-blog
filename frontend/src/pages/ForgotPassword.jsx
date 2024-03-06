@@ -2,6 +2,8 @@ import { Label, TextInput, Button, Alert, Spinner } from 'flowbite-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import env from '../config/env'
+
 function ForgotPassword() {
   const [email, setEmail] = useState()
   const [loading, setLoading] = useState(false)
@@ -18,7 +20,7 @@ function ForgotPassword() {
     try {
       setLoading(true)
 
-      const res = await fetch('http://localhost:8000/api/v1/auth/forgot-password', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

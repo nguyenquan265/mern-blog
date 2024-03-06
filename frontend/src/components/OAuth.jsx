@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { signInSuccess } from '../redux/user/userSlice'
 
+import env from '../config/env'
+
 function OAuth() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -17,7 +19,7 @@ function OAuth() {
 
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider)
-      const res = await fetch('http://localhost:8000/api/v1/auth/google', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

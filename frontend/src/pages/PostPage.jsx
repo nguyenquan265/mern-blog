@@ -16,6 +16,8 @@ import {
 import { FaBookmark } from "react-icons/fa"
 import { GrView } from "react-icons/gr"
 
+import env from '../config/env'
+
 function PostPage() {
   const { currentUser } = useSelector(state => state.user)
   const { postSlug } = useParams()
@@ -36,7 +38,7 @@ function PostPage() {
     try {
       dispatch(updateStart())
 
-      const res = await fetch(`http://localhost:8000/api/v1/posts/bookmarkPost/${post._id}/${currentUser._id}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/bookmarkPost/${post._id}/${currentUser._id}`, {
         method: 'PATCH',
         credentials: 'include'
       })
@@ -82,7 +84,7 @@ function PostPage() {
       try {
         setLoading(true)
 
-        const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?slug=${postSlug}`)
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?slug=${postSlug}`)
 
         const data = await res.json()
 
@@ -108,7 +110,7 @@ function PostPage() {
   useEffect(() => {
     try {
       const fetchRecentPosts = async () => {
-        const res = await fetch('http://localhost:8000/api/v1/posts/getPosts?limit=3')
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?limit=3`)
 
         const data = await res.json()
 

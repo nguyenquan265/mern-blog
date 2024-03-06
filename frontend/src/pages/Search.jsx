@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import PostCard from '../components/PostCard'
 
+import env from '../config/env'
+
 function Search() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -52,7 +54,7 @@ function Search() {
     const searchQuery = urlParams.toString()
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?${searchQuery}`)
+      const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?${searchQuery}`)
       const data = await res.json()
 
       if (res.ok) {
@@ -89,7 +91,7 @@ function Search() {
         setLoading(true)
 
         const searchQuery = urlParams.toString()
-        const res = await fetch(`http://localhost:8000/api/v1/posts/getPosts?${searchQuery}`)
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?${searchQuery}`)
         const data = await res.json()
 
         if (!res.ok) {

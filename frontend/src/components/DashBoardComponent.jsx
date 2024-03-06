@@ -4,6 +4,8 @@ import { HiAnnotation, HiArrowNarrowUp, HiDocumentText, HiOutlineUserGroup } fro
 import { Button, Table } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 
+import env from "../config/env"
+
 function DashBoardComponent() {
   const [users, setUsers] = useState([])
   const [comments, setComments] = useState([])
@@ -19,7 +21,7 @@ function DashBoardComponent() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/users/getUsers?limit=5', {
+        const res = await fetch(`${env.API_ROOT}/api/v1/users/getUsers?limit=5`, {
           credentials: 'include'
         })
         const data = await res.json()
@@ -36,7 +38,7 @@ function DashBoardComponent() {
 
     const fetchComments = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/comments/getComments?limit=5', {
+        const res = await fetch(`${env.API_ROOT}/api/v1/comments/getComments?limit=5`, {
           credentials: 'include'
         })
         const data = await res.json()
@@ -53,7 +55,7 @@ function DashBoardComponent() {
 
     const fetchPosts = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/posts/getPosts?limit=5', {
+        const res = await fetch(`${env.API_ROOT}/api/v1/posts/getPosts?limit=5`, {
           credentials: 'include'
         })
         const data = await res.json()

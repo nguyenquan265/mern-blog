@@ -2,6 +2,8 @@ import { Label, TextInput, Button, Alert, Spinner } from 'flowbite-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
+import env from '../config/env'
+
 function ResetPassword() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -30,7 +32,7 @@ function ResetPassword() {
 
       setLoading(true)
 
-      const res = await fetch('http://localhost:8000/api/v1/auth/reset-password', {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

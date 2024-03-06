@@ -17,6 +17,8 @@ import {
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 
+import env from '../config/env'
+
 function DashProfile() {
   const { currentUser, error, loading } = useSelector(state => state.user)
   const [imageFile, setImageFile] = useState(null)
@@ -86,7 +88,7 @@ function DashProfile() {
     try {
       dispatch(updateStart())
 
-      const res = await fetch(`http://localhost:8000/api/v1/users/update/${currentUser._id}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/users/update/${currentUser._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -114,7 +116,7 @@ function DashProfile() {
     try {
       dispatch(deleteStart())
 
-      const res = await fetch(`http://localhost:8000/api/v1/users/delete/${currentUser._id}`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/users/delete/${currentUser._id}`, {
         method: 'DELETE',
         credentials: 'include'
       })
@@ -133,7 +135,7 @@ function DashProfile() {
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/auth/signout`, {
+      const res = await fetch(`${env.API_ROOT}/api/v1/auth/signout`, {
         method: 'POST',
         credentials: 'include'
       })
