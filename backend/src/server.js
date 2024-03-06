@@ -22,9 +22,15 @@ const start = () => {
   app.use('/api/v1', APIs_V1)
   app.use(errorMiddleware)
 
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-  })
+  if (env.build_mode === 'prod') {
+    app.listen(process.env.PORT, () => {
+      console.log(`Pro: Server is running on port ${process.env.PORT}`)
+    })
+  } else {
+    app.listen(port, () => {
+      console.log(`Dev: Server is running on port ${port}`)
+    })
+  }
 }
 
 ;(async () => {
