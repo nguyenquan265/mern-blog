@@ -1,6 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation, HiChartPie } from 'react-icons/hi'
-import { FaBookmark } from "react-icons/fa"
+import { FaBookmark } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
