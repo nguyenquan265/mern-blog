@@ -8,7 +8,7 @@ import { signOutSuccess } from '../redux/user/userSlice'
 
 import env from '../config/env'
 
-function DashSideBar() {
+function DashSidebar() {
   const location = useLocation()
   const dispatch = useDispatch()
   const { currentUser } = useSelector(state => state.user)
@@ -124,4 +124,4 @@ function DashSideBar() {
   )
 }
 
-export default DashSideBar
+export default DashSidebar
