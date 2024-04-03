@@ -40,6 +40,7 @@ function PostPage() {
 
       const res = await fetch(`${env.API_ROOT}/api/v1/posts/bookmarkPost/${post._id}/${currentUser._id}`, {
         method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
       })
 

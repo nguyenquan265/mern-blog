@@ -105,11 +105,8 @@ export const updatePost = catchAsync(async (req, res, next) => {
 })
 
 export const bookmarkPost = catchAsync(async (req, res, next) => {
-  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
-    throw new ApiError(
-      statusCode.FORBIDDEN,
-      'You are not allow to update this post'
-    )
+  if (!req.user) {
+    throw new ApiError(statusCode.BAD_REQUEST, 'You are not logged in')
   }
 
   const user = await User.findById(req.params.userId)
