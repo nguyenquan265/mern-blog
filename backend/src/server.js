@@ -8,6 +8,9 @@ import { connectMongo } from './config/mongo.js'
 
 import APIs_V1 from './apis/routes/v1'
 import errorMiddleware from './middlewares/error.middleware.js'
+import cron from './cron'
+
+cron.start()
 
 const start = () => {
   const app = express()
